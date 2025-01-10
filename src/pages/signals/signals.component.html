@@ -1,0 +1,60 @@
+<div class="quiz">
+    <div *ngIf="!state.isCompleted" class="quiz__progress">
+        <div class="quiz__progress-bar" [style.width.%]="progressPercentage"></div>
+    </div>
+
+    <div *ngIf="!state.isCompleted" class="quiz__header">
+        <div class="quiz__stats">
+            <span class="quiz__score">Score: {{ state.score }}</span>
+            <span class="quiz__timer" [class.quiz__timer--warning]="state.timeRemaining <= 10">
+                Time: {{ state.timeRemaining }}s
+            </span>
+        </div>
+        <div class="quiz__info">
+            <span class="quiz__question-number">Question {{ state.currentQuestionIndex + 1 }}/{{ questions.length
+                }}</span>
+            <span class="quiz__difficulty quiz__difficulty--{{ currentQuestion.difficulty }}">
+                {{ currentQuestion.difficulty }}
+            </span>
+        </div>
+    </div>
+
+    <div *ngIf="!state.isCompleted" class="quiz__question">
+        <h2 class="quiz__question-text">{{ currentQuestion.text }}</h2>
+        <span class="quiz__category">{{ currentQuestion.category }}</span>
+
+        <div class="quiz__options">
+            <button *ngFor="let option of currentQuestion.options" (click)="checkAnswer(option)" [disabled]="isAnswered"
+                [class.quiz__option--selected]="selectedAnswer === option"
+                [class.quiz__option--correct]="showFeedback && option === currentQuestion.correctAnswer"
+                [class.quiz__option--incorrect]="showFeedback && selectedAnswer === option && option !== currentQuestion.correctAnswer"
+                class="quiz__option">
+                {{ option }}
+            </button>
+        </div>
+
+        <div *ngIf="showFeedback" class="quiz__feedback">
+            <p class="quiz__feedback-text" [class.quiz__feedback-text--correct]="isCorrect">
+                {{ isCorrect ? 'Correct!' : 'Incorrect!' }}
+            </p>
+            <p class="quiz__explanation">{{ currentQuestion.explanation }}</p>
+            <button (click)="nextQuestion()" class="quiz__next-button">
+                {{ isLastQuestion ? 'Finish Quiz' : 'Next Question' }}
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="state.isCompleted" class="quiz__results">
+        <h2 class="quiz__results-title">Quiz Completed!</h2>
+        <div class="quiz__results-score">
+            Final Score: {{ state.score }}
+        </div>
+        <div class="quiz__results-stats">
+            <p>Correct Answers: {{ correctAnswers }}/{{ questions.length }}</p>
+            <p>Accuracy: {{ accuracy }}%</p>
+        </div>
+        <button (click)="restartQuiz()" class="quiz__restart-button">
+            Try Again
+        </button>
+    </div>
+</div>
