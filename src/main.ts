@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { SignalComponent } from './pages/signals/signals.component';
+import { HighlightDirective } from './pages/directive/tooltip.directive';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [SignalComponent],
+  imports: [SignalComponent, HighlightDirective],
   template: `
     <div class="app">
       <h1 class="app__title">Advanced Quiz App</h1>
       <app-signal></app-signal>
+    </div>
+    <div highlight>
+This is Learnign phase;
     </div>
   `,
   styles: [`
@@ -27,6 +31,8 @@ import { SignalComponent } from './pages/signals/signals.component';
     }
   `]
 })
-export class App { }
+export class App {
+
+}
 
 bootstrapApplication(App);
